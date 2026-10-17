@@ -1,11 +1,13 @@
 #include <string>
 #include <iostream>
+#include <fstream>
+using namespace std;
 
 class User {
     public:
-        std::string username;
-        std::string usertype;
-        std::string password;
+        string username;
+        string usertype;
+        string password;
         bool is_logged_in;
         bool allow_transaction;
         bool allow_admin_transaction;
@@ -13,18 +15,27 @@ class User {
 
         // User login method, checks for username and password, gives user transaction privilages
         void login(){
-            std::string username_input;
-            std::string password_input;
+            string username_input;
+            string password_input;
             bool correct = false;
 
             while(correct == false){
-                std::cout << "please enter username" << "\n";
-                std::cin >> username_input;
+                cout << "please enter username" << "\n";
+                cin >> username_input;
 
                 // to be added: Check if username input is in current users file
+                string mytext;
+                cout << "reading file";
+                ifstream MyFile("CurrentUserAccounts.txt");
 
-                std::cout << "please enter password" << "\n";
-                std::cin >> password_input;
+                while (getline (MyFile,mytext)){
+                    cout << mytext;
+                }
+
+                MyFile.close();
+
+                cout << "please enter password" << "\n";
+                cin >> password_input;
 
                 // to be added: Check if password is correct for that user
                 if (password == password_input){
@@ -41,9 +52,9 @@ class User {
 
         // User logout method, remeoves transaction privilages
         void logout(){
-            std::string user_input;
-            std::cout << "would you like to log out Y/n" << "\n";
-            std::cin >> user_input;
+            string user_input;
+            cout << "would you like to log out Y/n" << "\n";
+            cin >> user_input;
             if (user_input == "Y"){
                 is_logged_in == false;
                 allow_transaction == false;
@@ -56,24 +67,24 @@ class User {
         // Checks for User admin privilages 
         void create(){
             if (usertype != "admin"){
-                std::cout << "only admin can create new users" << "\n";
+                cout << "only admin can create new users" << "\n";
             }
-            std::string set_username;
-            std::string set_password;
-            std::string set_usertype;
+            string set_username;
+            string set_password;
+            string set_usertype;
             int set_credit;
 
-            std::cout << "Enter username for new user" << "\n";
-            std::cin >> set_username;
+            cout << "Enter username for new user" << "\n";
+            cin >> set_username;
 
-            std::cout << "Enter password for new user" << "\n";
-            std::cin >> set_password;
+            cout << "Enter password for new user" << "\n";
+            cin >> set_password;
 
-            std::cout << "Enter usertype for new user" << "\n";
-            std::cin >> set_usertype;
+            cout << "Enter usertype for new user" << "\n";
+            cin >> set_usertype;
 
-            std::cout << "Enter credits for new user" << "\n";
-            std::cin >> set_credit;
+            cout << "Enter credits for new user" << "\n";
+            cin >> set_credit;
 
             // to be added: add all values to new line in current users
 
