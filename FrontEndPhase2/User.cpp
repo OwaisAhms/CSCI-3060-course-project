@@ -31,11 +31,20 @@ class User {
                 while (getline (MyFile,mytext)){
                     stringstream s(mytext);
                     string name;
+                    string type;
+                    float credits;
                     s >> name;
+                    s >> type;
+                    s >> credits;
                     if (username_input == name){
                         cout << "user found" << "\n";
                         cout << name + " logged in" << "\n";
                         correct = true;
+                        is_logged_in = true;
+                        allow_transaction = true;
+                        if (usertype == "AA"){
+                            allow_admin_transaction = true;
+                        }
                         break;
                     }
                 }
@@ -64,10 +73,10 @@ class User {
             cout << "would you like to log out Y/n" << "\n";
             cin >> user_input;
             if (user_input == "Y"){
-                is_logged_in == false;
-                allow_transaction == false;
+                is_logged_in = false;
+                allow_transaction = false;
                 if (usertype == "admin"){
-                    allow_admin_transaction == false;
+                    allow_admin_transaction = false; 
                 }
             }
         }
@@ -104,6 +113,23 @@ int main() {
     User main_user;
 
     main_user.login();
+    cout << main_user.is_logged_in << "\n";
+
+    while(main_user.is_logged_in == true){
+        int user_action;
+        cout << "enter what action you would like to perform" << "\n";
+        cout << "1: logout" << "\n";
+        cout << "2: create new user (admin action)" << "\n";
+        cin >> user_action;
+        if (user_action == 1){
+            main_user.logout();
+        }
+        if (user_action == 2){
+            main_user.create();
+        }
+    }
+
+    cout << "Good bye" << "\n";
 
     return 0;
 };
