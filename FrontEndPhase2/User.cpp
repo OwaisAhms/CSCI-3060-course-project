@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <bits/stdc++.h>
 using namespace std;
 
 class User {
@@ -25,27 +26,34 @@ class User {
 
                 // to be added: Check if username input is in current users file
                 string mytext;
-                cout << "reading file";
-                ifstream MyFile("CurrentUserAccounts.txt");
+                ifstream MyFile("/Users/tahoo/OneDrive/Desktop/Software Quality Assurance/CSCI-3060-course-project/FrontEndPhase2/textfiles/CurrentUserAccounts.txt");
 
                 while (getline (MyFile,mytext)){
-                    cout << mytext;
+                    stringstream s(mytext);
+                    string name;
+                    s >> name;
+                    if (username_input == name){
+                        cout << "user found" << "\n";
+                        cout << name + " logged in" << "\n";
+                        correct = true;
+                        break;
+                    }
                 }
 
                 MyFile.close();
 
-                cout << "please enter password" << "\n";
-                cin >> password_input;
+                // cout << "please enter password" << "\n";
+                // cin >> password_input;
 
-                // to be added: Check if password is correct for that user
-                if (password == password_input){
-                    correct == true;
-                    is_logged_in == true;
-                    allow_transaction == true;
-                    if (usertype == "admin"){
-                        allow_admin_transaction == true;
-                    }
-                }
+                // // to be added: Check if password is correct for that user
+                // if (password == password_input){
+                //     correct == true;
+                //     is_logged_in == true;
+                //     allow_transaction == true;
+                //     if (usertype == "admin"){
+                //         allow_admin_transaction == true;
+                //     }
+                // }
             }
 
         }
