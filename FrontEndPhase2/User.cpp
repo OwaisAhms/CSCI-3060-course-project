@@ -12,7 +12,7 @@ class User {
         bool is_logged_in;
         bool allow_transaction;
         bool allow_admin_transaction;
-        int curr_credits;
+        double curr_credits;
 
         // User login method, checks for username and password, gives user transaction privilages
         void login(){
@@ -32,7 +32,7 @@ class User {
                     stringstream s(mytext);
                     string name;
                     string type;
-                    float credits;
+                    double credits;
                     s >> name;
                     s >> type;
                     s >> credits;
@@ -48,9 +48,9 @@ class User {
                         usertype = type;
                         curr_credits = credits;
 
-                        // if (usertype == "AA"){
-                        //     allow_admin_transaction = true;
-                        // }
+                        if (usertype == "AA"){
+                            allow_admin_transaction = true;
+                        }
                         break;
                     }
                 }
@@ -89,29 +89,34 @@ class User {
 
         // Checks for User admin privilages 
         void create(){
-            if (usertype != "AA"){
+            if (usertype == "AA"){
+                string set_username;
+                string set_password;
+                string set_usertype;
+                double set_credit;
+
+                cout << "Enter username for new user" << "\n";
+                cin >> set_username;
+
+                cout << "Enter password for new user" << "\n";
+                cin >> set_password;
+
+                cout << "Enter usertype for new user" << "\n";
+                cin >> set_usertype;
+
+                cout << "Enter credits for new user" << "\n";
+                cin >> set_credit;
+
+                // to be added: add all values to new line in current users
+                ofstream MyFile("/Users/tahoo/OneDrive/Desktop/Software Quality Assurance/CSCI-3060-course-project/FrontEndPhase2/textfiles/CurrentUserAccounts.txt",fstream::app);
+
+                MyFile << "\n" + set_username + " " + set_usertype + " " + to_string(set_credit);
+
+                MyFile.close();
+            }
+            else{
                 cout << "only admin can create new users" << "\n";
             }
-            string set_username;
-            string set_password;
-            string set_usertype;
-            int set_credit;
-
-            cout << "Enter username for new user" << "\n";
-            cin >> set_username;
-
-            cout << "Enter password for new user" << "\n";
-            cin >> set_password;
-
-            cout << "Enter usertype for new user" << "\n";
-            cin >> set_usertype;
-
-            cout << "Enter credits for new user" << "\n";
-            cin >> set_credit;
-
-            // to be added: add all values to new line in current users
-
-
         }
 };
 
