@@ -12,7 +12,7 @@ class User {
         bool is_logged_in;
         bool allow_transaction;
         bool allow_admin_transaction;
-        int max_credit;
+        int curr_credits;
 
         // User login method, checks for username and password, gives user transaction privilages
         void login(){
@@ -39,12 +39,18 @@ class User {
                     if (username_input == name){
                         cout << "user found" << "\n";
                         cout << name + " logged in" << "\n";
+                        cout << "\n";
+
                         correct = true;
+                        username = name;
                         is_logged_in = true;
                         allow_transaction = true;
-                        if (usertype == "AA"){
-                            allow_admin_transaction = true;
-                        }
+                        usertype = type;
+                        curr_credits = credits;
+
+                        // if (usertype == "AA"){
+                        //     allow_admin_transaction = true;
+                        // }
                         break;
                     }
                 }
@@ -75,7 +81,7 @@ class User {
             if (user_input == "Y"){
                 is_logged_in = false;
                 allow_transaction = false;
-                if (usertype == "admin"){
+                if (usertype == "AA"){
                     allow_admin_transaction = false; 
                 }
             }
@@ -83,7 +89,7 @@ class User {
 
         // Checks for User admin privilages 
         void create(){
-            if (usertype != "admin"){
+            if (usertype != "AA"){
                 cout << "only admin can create new users" << "\n";
             }
             string set_username;
@@ -113,14 +119,21 @@ int main() {
     User main_user;
 
     main_user.login();
-    cout << main_user.is_logged_in << "\n";
 
     while(main_user.is_logged_in == true){
-        int user_action;
+        int user_action = 0;
+
+        cout << "Current User: " + main_user.username 
+        + " User type: " + main_user.usertype 
+        + " Current credits: " + to_string(main_user.curr_credits) << "\n";
+        cout << "\n";
+
         cout << "enter what action you would like to perform" << "\n";
         cout << "1: logout" << "\n";
         cout << "2: create new user (admin action)" << "\n";
+        cout << "\n";
         cin >> user_action;
+
         if (user_action == 1){
             main_user.logout();
         }
