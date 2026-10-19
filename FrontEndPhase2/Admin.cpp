@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 #include "User.cpp"
 
 class Admin: public User {
@@ -26,7 +26,7 @@ class Admin: public User {
                 // to be added: add all values to new line in current users
                 ofstream MyFile("textfiles/CurrentUserAccounts.txt",fstream::app);
 
-                MyFile << "\n" + set_username + " " + set_usertype + " " + to_string(set_credit);
+                MyFile << "\n" + set_username + " " + set_usertype + ", " + to_string(set_credit);
 
                 MyFile.close();
             }
@@ -40,10 +40,41 @@ class Admin: public User {
             if (usertype == "AA"){
 
                 string user_delete;
+                
                 cout << "Enter username for user to be deleted" << "\n";
                 cin >>  user_delete;
 
                 // checks to see if the user exists and is not the current user and would remove all their perms.
+                ifstream MyFile("textfiles/CurrentUserAccounts.txt");
+
+                ofstream tempFile("textfiles/temp.txt");
+
+                string myText;
+                bool user_found = false;
+
+                while (getline(MyFile, line))
+                {
+                    if (line.contains(user_delete)){
+                        tempFile << line << "\n";
+                        
+                    }
+                    else{
+                        user_found = true;
+                        cout << "User has been deleted" << "\n";
+                    }
+                }
+                
+                MyFile.close;
+                tempFile.close;
+
+                remove("textfiles/MyFile.txt");
+                rename("textfiles/tempFile.txt", "MyFile.txt");
+
+
+                if(user_found == false){
+                    cout << "User not found" << "\n";
+                }
+
             }
             else{
                 cout << "only admin can delete users" << "\n";

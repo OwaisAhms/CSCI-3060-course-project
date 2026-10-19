@@ -93,13 +93,20 @@ class User {
             }
             else{
                 string game_name;
-                double price;
+                string price;
+
+                cout << "Give the name of the game: " << "\n";;
+                cin >> game_name;
+
+                cout << "Give the price of the game: " << "\n";;
+                cin >> price;
 
                 // if game name is unique and the price isn't over 999.99
-                // create game object
                 // add game to list of games
                 // allow transactions false
-
+                ofstream file("textfiles/AvailableGamesFiles.txt");
+                file <<  game_name << ", " << price << "\n";
+                file.close;
             }
         }
 
@@ -109,10 +116,77 @@ class User {
             }
             else{
                 string game_name;
+                string buyer_username;
+                string seller_username;
+
+                cout << "Give the buyer username: " << "\n";;
+                cin >> buyer_username;
+
+                cout << "Give the seller username: " << "\n";;
+                cin >> seller_username;
 
                 // if game exists and buyer has equal or greater than the amount needed to purchase the game, and the game isnt the buyers library
                 // debit buyer, credit seller (increase/ decrease curr_credits)
                 // add game to buyers collection
+
+
+                cout << "Enter game name you wish to purchase: " << "\n";
+                cin >> game_name;
+
+                ifstream file("textfiles/AvailableGamesFiles.txt");
+
+                bool game_found = false;
+                string game_data;
+                int credits = 0;
+                string credit;
+
+                while(getline(file,game)){
+                    if(game.contains(game_name)){
+                        game_found = true;
+                        game_data = game;
+                    }
+                }
+
+                file.close;
+                if (game_found){
+                    size_t pos = game_data.find(',');
+                    credit = game_data.substr(pos + 1, game_data.length);
+                    credits = stoi(credit);
+
+                    ifstream MyFile("textfiles/CurrentUserAccounts.txt");
+
+                    ofstream tempFile("textfiles/temp.txt");
+
+                    bool user_found = false;
+
+                    while (getline(MyFile, line))
+                    {
+                        if (line.contains(seller_username)){
+                            pos = line.find(',');
+                            newLine = line.substr(0,pos);
+                            credits += stoi(credit);
+
+                            tempFile << line << itos(credits) << "\n";
+                        
+                        }
+                        if (line.contains(buyer_username)){
+                            pos = line.find(',');
+                            newLine = line.substr(0,pos);
+                            credits = stoi(credit) - credits;
+
+                            tempFile << line << itos(credits) << "\n";
+                        
+                        }
+                    }
+                
+                    MyFile.close;
+                    tempFile.close;
+
+                    remove("textfiles/MyFile.txt");
+                    rename("textfiles/tempFile.txt", "MyFile.txt");
+
+                }
+
             }
         }
 
