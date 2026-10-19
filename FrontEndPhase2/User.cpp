@@ -185,6 +185,12 @@ class User {
 
             ifstream MyFile("textfiles/CurrentUserAccounts.txt");
 
+            if(!MyFile.is_open()){
+                cout << "Could not open User Account file!" << endl;
+                return;
+
+            }
+
             string myText;
             bool buyer_found = false;
             bool seller_found = false;
@@ -210,7 +216,8 @@ class User {
                 return;
 
             }
-            else if(seller_found == false){
+            
+            if(seller_found == false){
                 cout << "Seller does not exist" << endl;
                 return;
 
@@ -218,6 +225,68 @@ class User {
 
             if(refund_amount <= 0){
                 cout << "Invalid refund amount" << endl;
+                return;
+
+            }
+
+        }
+
+        void addcredit(){
+
+            if (!is_logged_in){
+                cout << "You must be logged in!" << endl;
+                return;
+
+            }
+
+            double amount;
+            string recieving_username;
+            string recieving_usertype;
+            bool user_found = false;
+
+            cout << "Add credit: " << endl;
+            cin >> amount;
+
+            if (amount <= 0 || amount > 1000.00){
+                cout << "You cannot add this credit amount!" << endl;
+                return;
+
+            }
+
+            if (usertype == "AA"){
+                cout << "Enter username: " << endl;
+                cin >> recieving_username;
+
+            }
+            else{
+                recieving_username == username;
+
+            }
+
+            ifstream  MyFile("textfiles/CurrentUserAccounts.txt");
+
+            if (!MyFile.is_open()){
+                cout << "Could not open User Account file!" << endl;
+                return;
+
+            }
+
+            bool user_found = false;
+            string myText;
+
+            while(getline(MyFile, myText)){
+                if (myText.find(recieving_username) != string::npos){
+                    user_found = true;
+                    break;
+
+                }
+
+            }
+
+            MyFile.close();
+
+            if (user_found == false){
+                cout << "User does not exist!" << endl;
                 return;
 
             }
@@ -242,6 +311,7 @@ int main() {
         cout << "1: logout" << "\n";
         cout << "2: create new user (admin action)" << "\n";
         cout << "3: refund (admin action)" << endl;
+        cout << "4: add credit" << endl;
         cout << "\n";
         cin >> user_action;
 
@@ -254,6 +324,9 @@ int main() {
         if (user_action == 3){
             main_user.refund();
 
+        }
+        if (user_action == 4){
+            main_user.addcredit();
         }
     }
 
