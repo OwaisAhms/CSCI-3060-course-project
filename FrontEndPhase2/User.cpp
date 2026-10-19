@@ -106,7 +106,7 @@ class User {
                 // allow transactions false
                 ofstream file("textfiles/AvailableGamesFiles.txt");
                 file <<  game_name << ", " << price << "\n";
-                file.close;
+                // file.close;
             }
         }
 
@@ -139,18 +139,19 @@ class User {
                 string game_data;
                 int credits = 0;
                 string credit;
+                string game;
 
                 while(getline(file,game)){
-                    if(game.contains(game_name)){
+                    if(game.find(game_name) != string::npos){
                         game_found = true;
                         game_data = game;
                     }
                 }
 
-                file.close;
+                // file.close;
                 if (game_found){
                     size_t pos = game_data.find(',');
-                    credit = game_data.substr(pos + 1, game_data.length);
+                    credit = game_data.substr(pos + 1, game_data.length());
                     credits = stoi(credit);
 
                     ifstream MyFile("textfiles/CurrentUserAccounts.txt");
@@ -158,29 +159,33 @@ class User {
                     ofstream tempFile("textfiles/temp.txt");
 
                     bool user_found = false;
+                    string line;
+                    string newLine;
 
                     while (getline(MyFile, line))
                     {
-                        if (line.contains(seller_username)){
+                        if (line.find(seller_username) != string::npos){
                             pos = line.find(',');
                             newLine = line.substr(0,pos);
                             credits += stoi(credit);
-
-                            tempFile << line << itos(credits) << "\n";
+                            
+                            char buffer1[33];
+                            tempFile << line << itoa(credits, buffer1, 10) << "\n";
                         
                         }
-                        if (line.contains(buyer_username)){
+                        if (line.find(buyer_username) != string::npos){
                             pos = line.find(',');
                             newLine = line.substr(0,pos);
                             credits = stoi(credit) - credits;
 
-                            tempFile << line << itos(credits) << "\n";
+                            char buffer2[33];
+                            tempFile << line << itoa(credits, buffer2, 10) << "\n";
                         
                         }
                     }
                 
-                    MyFile.close;
-                    tempFile.close;
+                    // MyFile.close;
+                    // tempFile.close;
 
                     remove("textfiles/MyFile.txt");
                     rename("textfiles/tempFile.txt", "MyFile.txt");

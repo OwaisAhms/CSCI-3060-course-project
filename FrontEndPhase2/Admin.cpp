@@ -51,10 +51,11 @@ class Admin: public User {
 
                 string myText;
                 bool user_found = false;
+                string line;
 
                 while (getline(MyFile, line))
                 {
-                    if (line.contains(user_delete)){
+                    if (line.find(user_delete) != string::npos){
                         tempFile << line << "\n";
                         
                     }
@@ -64,8 +65,8 @@ class Admin: public User {
                     }
                 }
                 
-                MyFile.close;
-                tempFile.close;
+                // MyFile.close;
+                // tempFile.close;
 
                 remove("textfiles/MyFile.txt");
                 rename("textfiles/tempFile.txt", "MyFile.txt");
