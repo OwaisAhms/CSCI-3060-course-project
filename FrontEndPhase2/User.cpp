@@ -26,7 +26,7 @@ class User {
 
                 // to be added: Check if username input is in current users file
                 string mytext;
-                ifstream MyFile("/Users/tahoo/OneDrive/Desktop/Software Quality Assurance/CSCI-3060-course-project/FrontEndPhase2/textfiles/CurrentUserAccounts.txt");
+                ifstream MyFile("textfiles/CurrentUserAccounts.txt");
 
                 while (getline (MyFile,mytext)){
                     stringstream s(mytext);
@@ -87,52 +87,6 @@ class User {
             }
         }
 
-        // Checks for User admin privilages 
-        void create(){
-            if (usertype == "AA"){
-                string set_username;
-                string set_password;
-                string set_usertype;
-                double set_credit;
-
-                cout << "Enter username for new user" << "\n";
-                cin >> set_username;
-
-                cout << "Enter password for new user" << "\n";
-                cin >> set_password;
-
-                cout << "Enter usertype for new user" << "\n";
-                cin >> set_usertype;
-
-                cout << "Enter credits for new user" << "\n";
-                cin >> set_credit;
-
-                // to be added: add all values to new line in current users
-                ofstream MyFile("/Users/tahoo/OneDrive/Desktop/Software Quality Assurance/CSCI-3060-course-project/FrontEndPhase2/textfiles/CurrentUserAccounts.txt",fstream::app);
-
-                MyFile << "\n" + set_username + " " + set_usertype + " " + to_string(set_credit);
-
-                MyFile.close();
-            }
-            else{
-                cout << "only admin can create new users" << "\n";
-            }
-        }
-
-        void deleteuser(){
-            if (usertype == "AA"){
-
-                string user_delete;
-                cout << "Enter username for user to be deleted" << "\n";
-                cin >>  user_delete;
-
-                // checks to see if the user exists and is not the current user and would remove all their perms.
-            }
-            else{
-                cout << "only admin can delete users" << "\n";
-            }
-        }
-
         void sell(){
             if (usertype == "BS"){
                 cout << "You are not authroized to make this function" << "\n";
@@ -160,75 +114,6 @@ class User {
                 // debit buyer, credit seller (increase/ decrease curr_credits)
                 // add game to buyers collection
             }
-        }
-
-        void refund(){
-
-            if (usertype != "AA"){
-                cout << "You arent allowed to do this action!" << endl;
-                return;
-
-            }
-
-            string buyer_username;
-            string seller_username;
-            double refund_amount;
-
-            cout << "Give the buyer username: ";
-            cin >> buyer_username;
-
-            cout << "Give the seller username: ";
-            cin >> seller_username;
-
-            cout << "Enter the refund amount: ";
-            cin >> refund_amount;
-
-            ifstream MyFile("textfiles/CurrentUserAccounts.txt");
-
-            if(!MyFile.is_open()){
-                cout << "Could not open User Account file!" << endl;
-                return;
-
-            }
-
-            string myText;
-            bool buyer_found = false;
-            bool seller_found = false;
-
-            while(getline(MyFile, myText)){
-
-                if(myText.find(buyer_username) != string::npos){
-                    buyer_found = true;
-
-                }
-
-                if(myText.find(seller_username) != string::npos){
-                    seller_found = true;
-
-                }
-
-            }
-
-            MyFile.close();
-
-            if(buyer_found == false){
-                cout << "Buyer does not exist" << endl;
-                return;
-
-            }
-            
-            if(seller_found == false){
-                cout << "Seller does not exist" << endl;
-                return;
-
-            }
-
-            if(refund_amount <= 0){
-                cout << "Invalid refund amount" << endl;
-                return;
-
-            }
-
         }
 
         void addcredit(){
@@ -259,7 +144,7 @@ class User {
 
             }
             else{
-                recieving_username == username;
+                recieving_username = username;
 
             }
 
@@ -271,7 +156,7 @@ class User {
 
             }
 
-            bool user_found = false;
+            user_found = false;
             string myText;
 
             while(getline(MyFile, myText)){
@@ -294,43 +179,42 @@ class User {
         }
 };
 
-int main() {
-    User main_user;
+// int main() {
+//     User main_user;
 
-    main_user.login();
+//     main_user.login();
 
-    while(main_user.is_logged_in == true){
-        int user_action = 0;
+//     while(main_user.is_logged_in == true){
+//         int user_action = 0;
 
-        cout << "Current User: " + main_user.username 
-        + " User type: " + main_user.usertype 
-        + " Current credits: " + to_string(main_user.curr_credits) << "\n";
-        cout << "\n";
+//         cout << "Current User: " + main_user.username 
+//         + " User type: " + main_user.usertype 
+//         + " Current credits: " + to_string(main_user.curr_credits) << "\n";
+//         cout << "\n";
 
-        cout << "enter what action you would like to perform" << "\n";
-        cout << "1: logout" << "\n";
-        cout << "2: create new user (admin action)" << "\n";
-        cout << "3: refund (admin action)" << endl;
-        cout << "4: add credit" << endl;
-        cout << "\n";
-        cin >> user_action;
+//         cout << "enter what action you would like to perform" << "\n";
+//         cout << "1: logout" << "\n";
+//         cout << "2: create new user (admin action)" << "\n";
+//         cout << "3: refund (admin action)" << endl;
+//         cout << "4: add credit" << endl;
+//         cout << "\n";
+//         cin >> user_action;
 
-        if (user_action == 1){
-            main_user.logout();
-        }
-        if (user_action == 2){
-            main_user.create();
-        }
-        if (user_action == 3){
-            main_user.refund();
+//         if (user_action == 1){
+//             main_user.logout();
+//         }
+//         // if (user_action == 2){
+//         //     main_user.create();
+//         // }
+//         // if (user_action == 3){
+//         //     main_user.refund();
+//         // }
+//         if (user_action == 4){
+//             main_user.addcredit();
+//         }
+//     }
 
-        }
-        if (user_action == 4){
-            main_user.addcredit();
-        }
-    }
+//     cout << "Good bye" << "\n";
 
-    cout << "Good bye" << "\n";
-
-    return 0;
-};
+//     return 0;
+// };
