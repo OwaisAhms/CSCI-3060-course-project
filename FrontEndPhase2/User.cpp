@@ -161,6 +161,67 @@ class User {
                 // add game to buyers collection
             }
         }
+
+        void refund(){
+
+            if (usertype != "AA"){
+                cout << "You arent allowed to do this action!" << endl;
+                return;
+
+            }
+
+            string buyer_username;
+            string seller_username;
+            double refund_amount;
+
+            cout << "Give the buyer username: ";
+            cin >> buyer_username;
+
+            cout << "Give the seller username: ";
+            cin >> seller_username;
+
+            cout << "Enter the refund amount: ";
+            cin >> refund_amount;
+
+            ifstream MyFile("textfiles/CurrentUserAccounts.txt");
+
+            string myText;
+            bool buyer_found = false;
+            bool seller_found = false;
+
+            while(getline(MyFile, myText)){
+
+                if(myText.find(buyer_username) != string::npos){
+                    buyer_found = true;
+
+                }
+
+                if(myText.find(seller_username) != string::npos){
+                    seller_found = true;
+
+                }
+
+            }
+
+            MyFile.close();
+
+            if(buyer_found == false){
+                cout << "Buyer does not exist" << endl;
+                return;
+
+            }
+            else if(seller_found = false){
+                cout << "Seller does not exist" << endl;
+
+            }
+
+            if(refund_amount <=0){
+                cout << "Invalid refund amount" << endl;
+                return;
+
+            }
+
+        }
 };
 
 int main() {
@@ -179,6 +240,7 @@ int main() {
         cout << "enter what action you would like to perform" << "\n";
         cout << "1: logout" << "\n";
         cout << "2: create new user (admin action)" << "\n";
+        cout << "3: refund (admin action)" << endl;
         cout << "\n";
         cin >> user_action;
 
@@ -187,6 +249,10 @@ int main() {
         }
         if (user_action == 2){
             main_user.create();
+        }
+        if (user_action == 3){
+            main_user.refund();
+
         }
     }
 
