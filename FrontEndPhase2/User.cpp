@@ -119,7 +119,7 @@ class User {
             }
         }
 
-        void delete(){
+        void deleteuser(){
             if (usertype == "AA"){
 
                 string user_delete;
