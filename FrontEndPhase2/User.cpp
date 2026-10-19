@@ -210,12 +210,13 @@ class User {
                 return;
 
             }
-            else if(seller_found = false){
+            else if(seller_found == false){
                 cout << "Seller does not exist" << endl;
+                return;
 
             }
 
-            if(refund_amount <=0){
+            if(refund_amount <= 0){
                 cout << "Invalid refund amount" << endl;
                 return;
 
