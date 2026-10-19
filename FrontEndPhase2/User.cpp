@@ -118,6 +118,49 @@ class User {
                 cout << "only admin can create new users" << "\n";
             }
         }
+
+        void delete(){
+            if (usertype == "AA"){
+
+                string user_delete;
+                cout << "Enter username for user to be deleted" << "\n";
+                cin >>  user_delete;
+
+                // checks to see if the user exists and is not the current user and would remove all their perms.
+            }
+            else{
+                cout << "only admin can delete users" << "\n";
+            }
+        }
+
+        void sell(){
+            if (usertype == "BS"){
+                cout << "You are not authroized to make this function" << "\n";
+            }
+            else{
+                string game_name;
+                double price;
+
+                // if game name is unique and the price isn't over 999.99
+                // create game object
+                // add game to list of games
+                // allow transactions false
+
+            }
+        }
+
+        void buy(){
+            if (usertype == "SS"){
+                cout << "You are not authroized to make this function" << "\n";
+            }
+            else{
+                string game_name;
+
+                // if game exists and buyer has equal or greater than the amount needed to purchase the game, and the game isnt the buyers library
+                // debit buyer, credit seller (increase/ decrease curr_credits)
+                // add game to buyers collection
+            }
+        }
 };
 
 int main() {
