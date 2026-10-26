@@ -65,11 +65,11 @@ class Admin: public User {
                     }
                 }
                 
-                // MyFile.close;
-                // tempFile.close;
+                MyFile.close();
+                tempFile.close();
 
-                remove("textfiles/MyFile.txt");
-                rename("textfiles/tempFile.txt", "MyFile.txt");
+                remove("textfiles/CurrentUserAccounts.txt");
+                rename("textfiles/temp.txt", "textfiles/CurrentUserAccounts.txt");
 
 
                 if(user_found == false){
@@ -147,5 +147,14 @@ class Admin: public User {
         }
         void All_active_accounts(){
             // Will output all active accounts and relevant information
+        ifstream MyFile("textfiles/CurrentUserAccounts.txt");
+
+        String line;
+
+        while (getline(MyFile, line))
+        {
+            cout << << line << "\n";
         }
+        MyFile.close();
+    }
 };

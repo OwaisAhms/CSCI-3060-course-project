@@ -106,7 +106,7 @@ class User {
                 // allow transactions false
                 ofstream file("textfiles/AvailableGamesFiles.txt");
                 file <<  game_name << ", " << price << "\n";
-                // file.close;
+                file.close();
             }
         }
 
@@ -119,10 +119,10 @@ class User {
                 string buyer_username;
                 string seller_username;
 
-                cout << "Give the buyer username: " << "\n";;
+                cout << "Give the buyer username: " << "\n";
                 cin >> buyer_username;
 
-                cout << "Give the seller username: " << "\n";;
+                cout << "Give the seller username: " << "\n";
                 cin >> seller_username;
 
                 // if game exists and buyer has equal or greater than the amount needed to purchase the game, and the game isnt the buyers library
@@ -140,6 +140,8 @@ class User {
                 int credits = 0;
                 string credit;
                 string game;
+                int buy_creds = 0;
+                int sell_creds = 0;
 
                 while(getline(file,game)){
                     if(game.find(game_name) != string::npos){
@@ -148,7 +150,7 @@ class User {
                     }
                 }
 
-                // file.close;
+                file.close();
                 if (game_found){
                     size_t pos = game_data.find(',');
                     credit = game_data.substr(pos + 1, game_data.length());
@@ -167,28 +169,30 @@ class User {
                         if (line.find(seller_username) != string::npos){
                             pos = line.find(',');
                             newLine = line.substr(0,pos);
-                            credits += stoi(credit);
+                            buy_creds = stoi(line.substr(pos + 1));
+                            buy_creds -= credits;
                             
                             char buffer1[33];
-                            tempFile << line << itoa(credits, buffer1, 10) << "\n";
+                            tempFile << line << itoa(buy_creds, buffer1, 10) << "\n";
                         
                         }
                         if (line.find(buyer_username) != string::npos){
                             pos = line.find(',');
                             newLine = line.substr(0,pos);
-                            credits = stoi(credit) - credits;
+                            sell_creds = stoi(line.substr(pos + 1));
+                            sell_creds += credits;
 
                             char buffer2[33];
-                            tempFile << line << itoa(credits, buffer2, 10) << "\n";
+                            tempFile << newLine << itoa(credits, buffer2, 10) << "\n";
                         
                         }
                     }
                 
-                    // MyFile.close;
-                    // tempFile.close;
+                    MyFile.close();
+                    tempFile.close();
 
-                    remove("textfiles/MyFile.txt");
-                    rename("textfiles/tempFile.txt", "MyFile.txt");
+                    remove("textfiles/CurrentUserAccounts.txt");
+                    rename("textfiles/temp.txt", "textfiles/CurrentUserAccounts.txt");
 
                 }
 
