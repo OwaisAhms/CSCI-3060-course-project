@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <fstream>
 #include "User.cpp"
 
 class Admin: public User {
@@ -71,6 +73,12 @@ class Admin: public User {
                 remove("textfiles/CurrentUserAccounts.txt");
                 rename("textfiles/temp.txt", "textfiles/CurrentUserAccounts.txt");
 
+
+                ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFIleDelete",fstream::app);
+
+                MyFile2 << "02_" + user_delete + "_" + "AA\n";
+
+                MyFile2.close();
 
                 if(user_found == false){
                     cout << "User not found" << "\n";
@@ -149,11 +157,11 @@ class Admin: public User {
             // Will output all active accounts and relevant information
         ifstream MyFile("textfiles/CurrentUserAccounts.txt");
 
-        String line;
+        string line;
 
         while (getline(MyFile, line))
         {
-            cout << << line << "\n";
+            cout << line + "\n";
         }
         MyFile.close();
     }

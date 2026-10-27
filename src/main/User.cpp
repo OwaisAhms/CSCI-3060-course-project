@@ -107,6 +107,13 @@ class User {
                 ofstream file("textfiles/AvailableGamesFiles.txt");
                 file <<  game_name << ", " << price << "\n";
                 file.close();
+
+
+                ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFIleBuy",fstream::app);
+
+                MyFile2 << "03_" + game_name + "_" + this->username + price +"/n";
+
+                MyFile2.close();
             }
         }
 
@@ -194,6 +201,12 @@ class User {
                     remove("textfiles/CurrentUserAccounts.txt");
                     rename("textfiles/temp.txt", "textfiles/CurrentUserAccounts.txt");
 
+
+                    ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFIleBuy",fstream::app);
+
+                    MyFile2 << "05_" + buyer_username + "_" + seller_username + to_string(credits) +"/n";
+
+                    MyFile2.close();
                 }
 
             }
