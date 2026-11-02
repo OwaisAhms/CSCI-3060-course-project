@@ -1,0 +1,6 @@
+you are not authorized for this action
+input game name
+Game name not usable
+input game name
+input price
+price above maximum price

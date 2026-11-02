@@ -1,0 +1,4 @@
+Please enter a valid game
+you do not have the sufficient funds to purchase this game
+you already own this game
+added game to buyer collection

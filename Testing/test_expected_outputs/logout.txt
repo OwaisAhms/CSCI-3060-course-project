@@ -1,0 +1,2 @@
+User001 has logged out 
+Can only logout if logged in as a user
