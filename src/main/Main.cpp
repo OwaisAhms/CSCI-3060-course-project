@@ -1,5 +1,4 @@
-#include<iostream>
-#include "Admin.cpp"
+#include "Admin.h"
 
 int main() {
     string user_input;

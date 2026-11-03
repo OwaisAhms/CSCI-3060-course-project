@@ -1,2 +1,2 @@
-logout
-logout
+Y
+n
