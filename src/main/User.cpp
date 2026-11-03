@@ -2,16 +2,14 @@
 
 string username;
 string usertype;
-string password;
 bool is_logged_in;
 bool allow_transaction;
 bool allow_admin_transaction;
 double curr_credits;
 
-// User login method, checks for username and password, gives user transaction privilages
+// User login method, checks for username gives user transaction privilages
 void User::login(){
     string username_input;
-    string password_input;
     bool correct = false;
     while(correct == false){
         cout << "please enter username" << "\n";
@@ -190,10 +188,9 @@ void User::buy(){
 
 void User::addcredit(){
 
-    if (!is_logged_in){
+    if (is_logged_in == false){
         cout << "You must be logged in!" << endl;
         return;
-
     }
 
     double amount;
@@ -207,17 +204,14 @@ void User::addcredit(){
     if (amount <= 0 || amount > 1000.00){
         cout << "You cannot add this credit amount!" << endl;
         return;
-
     }
 
     if (usertype == "AA"){
         cout << "Enter username: " << endl;
         cin >> recieving_username;
-
     }
     else{
         recieving_username = username;
-
     }
 
     ifstream MyFile("../../Data/CurrentUserAccounts.txt");
@@ -225,7 +219,6 @@ void User::addcredit(){
     if (!MyFile.is_open()){
         cout << "Could not open User Account file!" << endl;
         return;
-
     }
 
     user_found = false;
@@ -235,9 +228,7 @@ void User::addcredit(){
         if (myText.find(recieving_username) != string::npos){
             user_found = true;
             break;
-
         }
-
     }
 
     MyFile.close();
@@ -245,6 +236,5 @@ void User::addcredit(){
     if (user_found == false){
         cout << "User does not exist!" << endl;
         return;
-
     }
 }

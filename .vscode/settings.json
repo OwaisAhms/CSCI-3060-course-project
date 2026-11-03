@@ -1,3 +1,4 @@
 {
-    "C_Cpp.default.compilerPath": "C:/msys64/ucrt64/bin/g++.exe"
+    "C_Cpp.default.compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+    "cmake.sourceDirectory": "C:/Users/tahoo/OneDrive/Desktop/Software Quality Assurance/CSCI-3060-course-project/Testing"
 }
