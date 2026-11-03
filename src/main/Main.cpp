@@ -7,14 +7,14 @@ int main() {
     
     cout << "Login as user or admin(U/A)" << "\n";
     cin >> user_input;
-    if (user_input == "U"){
-        main_user.login();
-    }
-    else{
+    if (user_input == "A"){
         main_admin.login();
     }
+    else{
+        main_user.login();
+    }
 
-    while(main_user.is_logged_in == true){
+    while(main_user.is_logged_in == true or main_admin.is_logged_in == true){
         int user_action = 0;
 
         cout << "Current User: " + main_user.username 
@@ -35,27 +35,46 @@ int main() {
         cin >> user_action;
 
         if (user_action == 1){
+            if (user_input == "A"){
+                main_admin.logout();
+            }
             main_user.logout();
         }
+
         if (user_action == 2){
             main_admin.create();
         }
+
         if (user_action == 3){
             main_admin.refund();
         }
+
         if (user_action == 4){
+            if (user_input == "A"){
+                main_admin.addcredit();
+            }
             main_user.addcredit();
         }
+
         if (user_action == 5){
             main_admin.deleteuser();
         }
+
         if (user_action == 6){
             main_admin.All_active_accounts();
         }
+
         if (user_action == 7){
+            if (user_input == "A"){
+                main_admin.sell();
+            }
             main_user.sell();
         }
+
         if (user_action == 8){
+            if (user_input == "A"){
+                main_admin.buy();
+            }
             main_user.buy();
         }
     }
