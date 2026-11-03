@@ -14,7 +14,6 @@ int main() {
         main_admin.login();
     }
 
-
     while(main_user.is_logged_in == true){
         int user_action = 0;
 

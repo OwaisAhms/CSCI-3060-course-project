@@ -20,7 +20,7 @@ void Admin::create(){
         cin >> set_credit;
 
         // to be added: add all values to new line in current users
-        ofstream MyFile("Data/CurrentUserAccounts.txt",fstream::app);
+        ofstream MyFile("../../Data/CurrentUserAccounts.txt",fstream::app);
 
         MyFile << "\n" + set_username + " " + set_usertype + ", " + to_string(set_credit);
 
@@ -41,9 +41,9 @@ void Admin::deleteuser(){
         cin >>  user_delete;
 
         // checks to see if the user exists and is not the current user and would remove all their perms.
-        ifstream MyFile("Data/CurrentUserAccounts.txt");
+        ifstream MyFile("../../Data/CurrentUserAccounts.txt");
 
-        ofstream tempFile("Data/temp.txt");
+        ofstream tempFile("../../Data/temp.txt");
 
         string myText;
         bool user_found = false;
@@ -64,8 +64,8 @@ void Admin::deleteuser(){
         MyFile.close();
         tempFile.close();
 
-        remove("Data/CurrentUserAccounts.txt");
-        rename("Data/temp.txt", "Data/CurrentUserAccounts.txt");
+        remove("../../Data/CurrentUserAccounts.txt");
+        rename("../../Data/temp.txt", "../../Data/CurrentUserAccounts.txt");
 
 
         ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFIleDelete",fstream::app);
@@ -105,7 +105,7 @@ void Admin::refund(){
     cout << "Enter the refund amount: ";
     cin >> refund_amount;
 
-    ifstream MyFile("Data/CurrentUserAccounts.txt");
+    ifstream MyFile("../../Data/CurrentUserAccounts.txt");
 
     if(!MyFile.is_open()){
         cout << "Could not open User Account file!" << endl;
@@ -149,7 +149,7 @@ void Admin::refund(){
 }
 void Admin::All_active_accounts(){
     // Will output all active accounts and relevant information
-    ifstream MyFile("Data/CurrentUserAccounts.txt");
+    ifstream MyFile("../../Data/CurrentUserAccounts.txt");
 
     string line;
 

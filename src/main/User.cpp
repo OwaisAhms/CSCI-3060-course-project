@@ -17,7 +17,7 @@ void User::login(){
         cout << "please enter username" << "\n";
         cin >> username_input;
         string mytext;
-        ifstream MyFile("Data/CurrentUserAccounts.txt");
+        ifstream MyFile("../../Data/CurrentUserAccounts.txt");
         while (getline (MyFile,mytext)){
             stringstream s(mytext);
             string name;
@@ -26,6 +26,10 @@ void User::login(){
             s >> name;
             s >> type;
             s >> credits;
+            char chars[] = "_";
+            for (int i = 0;i < strlen(chars); i++){
+                name.erase(remove(name.begin(), name.end(), chars[i]),name.end());
+            }
             if (username_input == name){
                 cout << "user found" << "\n";
                 cout << name + " logged in" << "\n";
@@ -77,11 +81,11 @@ void User::sell(){
         // if game name is unique and the price isn't over 999.99
         // add game to list of games
         // allow transactions false
-        ofstream file("Data/AvailableGamesFiles.txt");
+        ofstream file("../../Data/AvailableGamesFiles.txt");
         file <<  game_name << ", " << price << "\n";
         file.close();
 
-        ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFIleBuy",fstream::app);
+        ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFileBuy",fstream::app);
 
         MyFile2 << "03_" + game_name + "_" + this->username + price +"/n";
 
@@ -112,7 +116,7 @@ void User::buy(){
         cout << "Enter game name you wish to purchase: " << "\n";
         cin >> game_name;
 
-        ifstream file("Data/AvailableGamesFiles.txt");
+        ifstream file("../../Data/AvailableGamesFiles.txt");
 
         bool game_found = false;
         string game_data;
@@ -135,9 +139,9 @@ void User::buy(){
             credit = game_data.substr(pos + 1, game_data.length());
             credits = stoi(credit);
 
-            ifstream MyFile("Data/CurrentUserAccounts.txt");
+            ifstream MyFile("../../Data/CurrentUserAccounts.txt");
 
-            ofstream tempFile("Data/temp.txt");
+            ofstream tempFile("../../Data/temp.txt");
 
             bool user_found = false;
             string line;
@@ -170,8 +174,8 @@ void User::buy(){
             MyFile.close();
             tempFile.close();
 
-            remove("Data/CurrentUserAccounts.txt");
-            rename("Data/temp.txt", "Data/CurrentUserAccounts.txt");
+            remove("../../Data/CurrentUserAccounts.txt");
+            rename("../../Data/temp.txt", "../../Data/CurrentUserAccounts.txt");
 
 
             ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFIleBuy",fstream::app);
@@ -216,7 +220,7 @@ void User::addcredit(){
 
     }
 
-    ifstream  MyFile("Data/CurrentUserAccounts.txt");
+    ifstream MyFile("../../Data/CurrentUserAccounts.txt");
 
     if (!MyFile.is_open()){
         cout << "Could not open User Account file!" << endl;
