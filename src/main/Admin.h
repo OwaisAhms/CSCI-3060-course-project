@@ -9,6 +9,7 @@ public:
     void deleteuser();
     void refund();
     void All_active_accounts();
+    void Search();
 };
 
 #endif

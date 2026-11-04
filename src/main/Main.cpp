@@ -38,10 +38,15 @@ int main() {
         cin >> user_action;
 
         if (user_action == 1){
+            string input;
             if (user_input == "A"){
-                main_admin.logout();
+                cout << "would you like to log out Y/n" << "\n";
+                cin >> input;
+                cout << main_admin.logout(input) << "\n";
             }
-            main_user.logout();
+            cout << "would you like to log out Y/n" << "\n";
+            cin >> input;
+            cout <<  main_user.logout(input) << "\n";
         }
 
         if (user_action == 2){

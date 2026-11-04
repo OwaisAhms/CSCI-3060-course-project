@@ -43,17 +43,16 @@ string User::login(string username_input, bool istest){
 }
 
 // User logout method, remeoves transaction privilages
-void User::logout(){
-    string user_input;
-    cout << "would you like to log out Y/n" << "\n";
-    cin >> user_input;
-    if (user_input == "Y"){
+string User::logout(string input){
+    if (input == "Y"){
         is_logged_in = false;
         allow_transaction = false;
         if (usertype == "AA"){
             allow_admin_transaction = false; 
         }
+        return "logged out";
     }
+    return "user did not log out";
 }
 
 void User::sell(){
