@@ -37,9 +37,6 @@ string User::login(string username_input, bool istest){
             }
             return output;
         }
-        else {
-            return "User does not exist";
-        }
     }
     MyFile.close();
     return "User does not exist";
