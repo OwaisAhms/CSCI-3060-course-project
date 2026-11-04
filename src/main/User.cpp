@@ -220,6 +220,7 @@ void User::addcredit(){
     while(getline(MyFile, myText)){
         if (myText.find(recieving_username) != string::npos){
             user_found = true;
+            recieving_usertype = myText.substr(16, 2);
             break;
         }
     }
