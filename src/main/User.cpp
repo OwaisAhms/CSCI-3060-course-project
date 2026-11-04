@@ -1,51 +1,48 @@
 #include "User.h"
 
-string username;
-string usertype;
-bool is_logged_in;
-bool allow_transaction;
-bool allow_admin_transaction;
-double curr_credits;
-
 // User login method, checks for username gives user transaction privilages
-void User::login(){
-    string username_input;
-    bool correct = false;
-    while(correct == false){
-        cout << "please enter username" << "\n";
-        cin >> username_input;
-        string mytext;
-        ifstream MyFile("../../Data/CurrentUserAccounts.txt");
-        while (getline (MyFile,mytext)){
-            stringstream s(mytext);
-            string name;
-            string type;
-            double credits;
-            s >> name;
-            s >> type;
-            s >> credits;
-            char chars[] = "_";
-            for (int i = 0;i < strlen(chars); i++){
-                name.erase(remove(name.begin(), name.end(), chars[i]),name.end());
-            }
-            if (username_input == name){
-                cout << "user found" << "\n";
-                cout << name + " logged in" << "\n";
-                cout << "\n";
-                correct = true;
-                username = name;
-                is_logged_in = true;
-                allow_transaction = true;
-                usertype = type;
-                curr_credits = credits;
-                if (usertype == "AA"){
-                    allow_admin_transaction = true;
-                }
-                break;
-            }
-        }
-        MyFile.close();
+string User::login(string username_input, bool istest){
+    string mytext;
+    string filepath;
+    if (istest == false) {
+        filepath = "../../Data/CurrentUserAccounts.txt";
     }
+    else{
+        filepath = "../../../../Data/CurrentUserAccounts.txt";
+    }
+    ifstream MyFile(filepath);
+    while (getline (MyFile,mytext)){
+        stringstream s(mytext);
+        string name;
+        string type;
+        double credits;
+        s >> name;
+        s >> type;
+        s >> credits;
+        char chars[] = "_";
+        for (int i = 0;i < strlen(chars); i++){
+            name.erase(remove(name.begin(), name.end(), chars[i]),name.end());
+        }
+        if (username_input == name){
+            cout << "user found" << "\n";
+            string output = name + " logged in";
+            cout << "\n";
+            username = name;
+            is_logged_in = true;
+            allow_transaction = true;
+            usertype = type;
+            curr_credits = credits;
+            if (usertype == "AA"){
+                allow_admin_transaction = true;
+            }
+            return output;
+        }
+        else {
+            return "User does not exist";
+        }
+    }
+    MyFile.close();
+    return "User does not exist";
 }
 
 // User logout method, remeoves transaction privilages

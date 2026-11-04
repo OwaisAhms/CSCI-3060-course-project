@@ -17,7 +17,7 @@ public:
     bool allow_transaction;
     bool allow_admin_transaction;
     double curr_credits;
-    void login();
+    string login(string username_input,bool istest);
     void logout();
     void sell();
     void buy();

@@ -2,16 +2,19 @@
 
 int main() {
     string user_input;
+    string username;
     User main_user;
     Admin main_admin;
     
     cout << "Login as user or admin(U/A)" << "\n";
     cin >> user_input;
+    cout << "Please enter Username" << "\n";
+    cin >> username;
     if (user_input == "A"){
-        main_admin.login();
+        cout << main_admin.login(username,false) << "\n";
     }
     else{
-        main_user.login();
+        cout << main_user.login(username,false) << "\n";
     }
 
     while(main_user.is_logged_in == true or main_admin.is_logged_in == true){
