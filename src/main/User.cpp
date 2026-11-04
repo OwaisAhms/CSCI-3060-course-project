@@ -231,4 +231,18 @@ void User::addcredit(){
         cout << "User does not exist!" << endl;
         return;
     }
+
+    // Output Add Credit transaction
+    ofstream MyFile2("../../Data/DailyTransactionFile.txt", fstream::app);
+
+    if (!MyFile2.is_open()){
+        cout << "Could not open Daily Transaction File!" << endl;
+        return;
+    }
+
+    MyFile2 << "06 " + recieving_username + " " + recieving_usertype + " " + to_string(amount) + "\n";
+
+    MyFile2.close();
+
+    cout << "Credit transaction recorded!" << endl;
 }
