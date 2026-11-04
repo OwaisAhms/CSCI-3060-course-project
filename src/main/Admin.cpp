@@ -1,33 +1,33 @@
 #include "Admin.h"
 
-void Admin::create(){
+string Admin::create(string set_user,bool istest){
     if (usertype == "AA"){
+        string filepath; 
         string set_username;
-        string set_password;
         string set_usertype;
-        double set_credit;
+        string set_credit;
 
-        cout << "Enter username for new user" << "\n";
-        cin >> set_username;
+        if (istest == false){
+            filepath = "../../Data/CurrentUserAccounts.txt";
+        }
+        else{
+            filepath = "../../../../Data/CurrentUserAccounts.txt";
+        }
+        ofstream MyFile(filepath,fstream::app);
+        stringstream s(set_user);
+        s >> set_username;
+        s >> set_usertype;
+        s >> set_credit;
 
-        cout << "Enter password for new user" << "\n";
-        cin >> set_password;
+        string user_info = set_username + "________ " + set_usertype + " " + set_credit;
 
-        cout << "Enter usertype for new user" << "\n";
-        cin >> set_usertype;
-
-        cout << "Enter credits for new user" << "\n";
-        cin >> set_credit;
-
-        // to be added: add all values to new line in current users
-        ofstream MyFile("../../Data/CurrentUserAccounts.txt",fstream::app);
-
-        MyFile << "\n" + set_username + " " + set_usertype + ", " + to_string(set_credit);
+        MyFile << "\n" + user_info;
 
         MyFile.close();
+        return user_info + "added to Current Users";
     }
     else{
-        cout << "only admin can create new users" << "\n";
+        return "only admin can create new users";
     }
 }
 

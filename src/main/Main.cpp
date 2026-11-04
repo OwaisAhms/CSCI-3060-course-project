@@ -5,6 +5,7 @@ int main() {
     string username;
     User main_user;
     Admin main_admin;
+    int user_action = 0;
     
     cout << "Login as user or admin(U/A)" << "\n";
     cin >> user_input;
@@ -18,7 +19,7 @@ int main() {
     }
 
     while(main_user.is_logged_in == true or main_admin.is_logged_in == true){
-        int user_action = 0;
+        user_action = 0;
 
         cout << "Current User: " + main_user.username 
         + " User type: " + main_user.usertype 
@@ -44,13 +45,19 @@ int main() {
                 cin >> input;
                 cout << main_admin.logout(input) << "\n";
             }
-            cout << "would you like to log out Y/n" << "\n";
-            cin >> input;
-            cout <<  main_user.logout(input) << "\n";
+            else{
+                cout << "would you like to log out Y/n" << "\n";
+                cin >> input;
+                cout <<  main_user.logout(input) << "\n";
+            }
         }
 
         if (user_action == 2){
-            main_admin.create();
+            string new_user;
+
+            cout << "Enter info for new user" << "\n";
+            cin >> new_user;
+            cout << main_admin.create(new_user,false) << "\n";
         }
 
         if (user_action == 3){
