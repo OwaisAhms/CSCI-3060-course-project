@@ -15,16 +15,16 @@ string Admin::create(string set_user,bool istest){
         }
         ofstream MyFile(filepath,fstream::app);
         stringstream s(set_user);
-        s >> set_username;
-        s >> set_usertype;
-        s >> set_credit;
+        if (!(s >> set_username >> set_usertype >> set_credit)){
+            return "Invalid user info. Enter username, user type, and credit.";
+        }
 
         string user_info = set_username + "________ " + set_usertype + " " + set_credit;
 
         MyFile << "\n" + user_info;
 
         MyFile.close();
-        return user_info + "added to Current Users";
+        return user_info + " added to Current Users";
     }
     else{
         return "only admin can create new users";

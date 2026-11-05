@@ -1,8 +1,3 @@
-User002________ FS 000000.00 added to Current Users
-User003________ BS 000000.00 added to Current Users
-User004________ SS 001100.00 added to Current Users
-User005________ BS 000050.00 added to Current Users
-User006________ BS 065000.00 added to Current Users
-User007________ BS 000080.00 added to Current Users
-User008________ BS 000000.00 added to Current Users
-Only admin users have permission to create new accounts
+User010________ FS 0.0000000 added to Current Users
+User011________ BS 0.0000000 added to Current Users
+User012________ SS 0.0000000 added to Current Users

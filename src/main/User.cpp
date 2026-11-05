@@ -24,7 +24,6 @@ string User::login(string username_input, bool istest){
             name.erase(remove(name.begin(), name.end(), chars[i]),name.end());
         }
         if (username_input == name){
-            cout << "user found" << "\n";
             string output = name + " logged in";
             cout << "\n";
             username = name;

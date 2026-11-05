@@ -18,12 +18,14 @@ int main() {
         cout << main_user.login(username,false) << "\n";
     }
 
-    while(main_user.is_logged_in == true or main_admin.is_logged_in == true){
+    User& current_user = user_input == "A" ? static_cast<User&>(main_admin) : main_user;
+
+    while(current_user.is_logged_in){
         user_action = 0;
 
-        cout << "Current User: " + main_user.username 
-        + " User type: " + main_user.usertype 
-        + " Current credits: " + to_string(main_user.curr_credits) << "\n";
+        cout << "Current User: " + current_user.username
+        + " User type: " + current_user.usertype
+        + " Current credits: " + to_string(current_user.curr_credits) << "\n";
         cout << "\n";
 
         cout << "enter what action you would like to perform" << "\n";
@@ -36,27 +38,28 @@ int main() {
         cout << "7: sell a game" << endl;
         cout << "8: buy a game" << endl;
         cout << "\n";
-        cin >> user_action;
+        string action_input;
+        if (!getline(cin >> ws, action_input)){
+            break;
+        }
+        stringstream action_stream(action_input);
+        if (!(action_stream >> user_action)){
+            cout << "Invalid action. Enter a number from 1 to 8." << endl;
+            continue;
+        }
 
         if (user_action == 1){
             string input;
-            if (user_input == "A"){
-                cout << "would you like to log out Y/n" << "\n";
-                cin >> input;
-                cout << main_admin.logout(input) << "\n";
-            }
-            else{
-                cout << "would you like to log out Y/n" << "\n";
-                cin >> input;
-                cout <<  main_user.logout(input) << "\n";
-            }
+            cout << "would you like to log out Y/n" << "\n";
+            cin >> input;
+            cout << current_user.logout(input) << "\n";
         }
 
         if (user_action == 2){
             string new_user;
 
             cout << "Enter info for new user" << "\n";
-            cin >> new_user;
+            getline(cin >> ws, new_user);
             cout << main_admin.create(new_user,false) << "\n";
         }
 
@@ -68,7 +71,9 @@ int main() {
             if (user_input == "A"){
                 main_admin.addcredit();
             }
-            main_user.addcredit();
+            else{
+                main_user.addcredit();
+            }
         }
 
         if (user_action == 5){
@@ -83,14 +88,18 @@ int main() {
             if (user_input == "A"){
                 main_admin.sell();
             }
-            main_user.sell();
+            else{
+                main_user.sell();
+            }
         }
 
         if (user_action == 8){
             if (user_input == "A"){
                 main_admin.buy();
             }
-            main_user.buy();
+            else{
+                main_user.buy();
+            }
         }
     }
 

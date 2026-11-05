@@ -60,6 +60,7 @@ TEST(MyTest, logout) {
 
 TEST(MyTest, create) {
     admin.login("User001",false);
+    admin.usertype = "AA";
 
     string test_input;
     string test_output;
