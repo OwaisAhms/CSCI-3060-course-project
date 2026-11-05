@@ -146,6 +146,20 @@ void Admin::refund(){
         return;
 
     }
+
+    // Output Refund transaction
+    ofstream MyFile2("../../Data/DailyTransactionFile.txt", fstream::app);
+
+    if (!MyFile2.is_open()){
+        cout << "Could not open Daily Transaction File!" << endl;
+        return;
+    }
+
+    MyFile2 << "05 " + buyer_username + " " + seller_username + " " + to_string(refund_amount) + "\n";
+
+    MyFile2.close();
+
+    cout << "Refund transaction recorded!" << endl;
 }
 void Admin::All_active_accounts(){
     // Will output all active accounts and relevant information
