@@ -25,7 +25,6 @@ string User::login(string username_input, bool istest){
         }
         if (username_input == name){
             string output = name + " logged in";
-            cout << "\n";
             username = name;
             is_logged_in = true;
             allow_transaction = true;

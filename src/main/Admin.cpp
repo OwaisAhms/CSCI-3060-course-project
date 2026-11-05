@@ -18,8 +18,14 @@ string Admin::create(string set_user,bool istest){
         if (!(s >> set_username >> set_usertype >> set_credit)){
             return "Invalid user info. Enter username, user type, and credit.";
         }
+        if (set_username.length() > 15){
+            return "Username must be under 15 charcters";
+        }
+        while (set_username.length() != 15){
+            set_username.append("_");
+        }
 
-        string user_info = set_username + "________ " + set_usertype + " " + set_credit;
+        string user_info = set_username + " " + set_usertype + " " + set_credit;
 
         MyFile << "\n" + user_info;
 
