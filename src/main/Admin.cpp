@@ -21,6 +21,43 @@ string Admin::create(string set_user,bool istest){
         if (set_username.length() > 15){
             return "Username must be under 15 charcters";
         }
+        const size_t decimal_position = set_credit.find('.');
+        if (decimal_position != string::npos &&
+            set_credit.find('.', decimal_position + 1) != string::npos){
+            return "Credit must be between 0 and 999999.99 with at most 2 decimal places.";
+        }
+
+        string whole_credit = set_credit.substr(0, decimal_position);
+        string fractional_credit = decimal_position == string::npos
+            ? ""
+            : set_credit.substr(decimal_position + 1);
+        if (whole_credit.empty() ||
+            (decimal_position != string::npos && fractional_credit.empty()) ||
+            fractional_credit.length() > 2){
+            return "Credit must be between 0 and 999999.99 with at most 2 decimal places.";
+        }
+        for (char digit : whole_credit){
+            if (digit < '0' || digit > '9'){
+                return "Credit must be between 0 and 999999.99 with at most 2 decimal places.";
+            }
+        }
+        for (char digit : fractional_credit){
+            if (digit < '0' || digit > '9'){
+                return "Credit must be between 0 and 999999.99 with at most 2 decimal places.";
+            }
+        }
+
+        const size_t first_nonzero = whole_credit.find_first_not_of('0');
+        whole_credit = first_nonzero == string::npos
+            ? "0"
+            : whole_credit.substr(first_nonzero);
+        if (whole_credit.length() > 6){
+            return "Credit must be between 0 and 999999.99 with at most 2 decimal places.";
+        }
+        whole_credit.insert(0, 6 - whole_credit.length(), '0');
+        fractional_credit.append(2 - fractional_credit.length(), '0');
+        set_credit = whole_credit + "." + fractional_credit;
+
         while (set_username.length() != 15){
             set_username.append("_");
         }
@@ -167,15 +204,28 @@ void Admin::refund(){
 
     cout << "Refund transaction recorded!" << endl;
 }
-void Admin::All_active_accounts(){
+string Admin::All_active_accounts(string input,bool istest){
     // Will output all active accounts and relevant information
-    ifstream MyFile("../../Data/CurrentUserAccounts.txt");
+    if(input == "Y"){
+        string filepath;
+        if (istest == true){
+            filepath = "../../../../Data/CurrentUserAccounts.txt";
+        }
+        else{
+            filepath = "../../Data/CurrentUserAccounts.txt";
+        }
+        ifstream MyFile(filepath);
 
-    string line;
+        string line;
 
-    while (getline(MyFile, line))
-    {
-        cout << line + "\n";
+        while (getline(MyFile, line))
+        {
+            cout << line + "\n";
+        }
+        MyFile.close();
+
+        return "All users displayed";
+    }else{
+        return "Did not display users";
     }
-    MyFile.close();
 }

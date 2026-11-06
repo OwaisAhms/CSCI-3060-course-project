@@ -81,7 +81,10 @@ int main() {
         }
 
         if (user_action == 6){
-            main_admin.All_active_accounts();
+            string input;
+            cout << "do you want to output all current users" << endl;
+            cin >> input;
+            cout << main_admin.All_active_accounts(input,false) << endl;
         }
 
         if (user_action == 7){

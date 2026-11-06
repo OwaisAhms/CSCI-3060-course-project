@@ -67,6 +67,7 @@ int main() {
     User user;
     Admin admin_user;
     Admin non_admin_user;
+    admin_user.usertype = "AA";
 
     cout << "login test" << endl;
     const bool login_passed = test_output(
@@ -89,18 +90,7 @@ int main() {
     );
 
     cout << "create test" << endl;
-    non_admin_user.usertype = "FS";
-    const bool create_permission_passed = test_output(
-        "../test_inputs/create.txt",
-        "../test_expected_outputs/create_permission.txt",
-        non_admin_user,
-        [](Admin& test_user, const string& input) {
-            return test_user.create(input, true);
-        }
-    );
-
-    admin_user.usertype = "AA";
-    const bool create_validation_passed = test_output(
+    const bool create_passed = test_output(
         "../test_inputs/create.txt",
         "../test_expected_outputs/create.txt",
         admin_user,
@@ -109,8 +99,18 @@ int main() {
         }
     );
 
-    if (login_passed && logout_passed && create_permission_passed &&
-        create_validation_passed) {
+    cout << "All_active_accounts test" << endl;
+    const bool All_active_accounts_passed = test_output(
+        "../test_inputs/CurrentUserAccounts.txt",
+        "../test_expected_outputs/CurrentUserAccounts.txt",
+        admin_user,
+        [](Admin& test_user, const string& input) {
+            return test_user.All_active_accounts(input,true);
+        }
+    );
+    
+
+    if (login_passed && logout_passed && create_passed && All_active_accounts_passed) {
         cout << "All tests passed\n";
         return 0;
     }

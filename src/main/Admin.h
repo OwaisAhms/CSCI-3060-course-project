@@ -8,7 +8,7 @@ public:
     string create(string setuser,bool istest);
     void deleteuser();
     void refund();
-    void All_active_accounts();
+    string All_active_accounts(string input,bool istest);
     void Search();
 };
 
