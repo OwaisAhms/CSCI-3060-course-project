@@ -37,6 +37,7 @@ int main() {
         cout << "6: Output all active users (admin action)" << endl;
         cout << "7: sell a game" << endl;
         cout << "8: buy a game" << endl;
+        cout << "9: search for games and users" << endl;
         cout << "\n";
         string action_input;
         if (!getline(cin >> ws, action_input)){
@@ -124,6 +125,10 @@ int main() {
                 string sellar_name;
                 main_user.buy(game_name,sellar_name, false);
             }
+        }
+
+        if (user_action == 9){
+            current_user.search();
         }
     }
 

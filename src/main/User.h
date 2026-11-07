@@ -23,6 +23,7 @@ public:
     string sell(string game_name, string price);
     string buy(string game_name, string seller_username, bool istest);
     void addcredit();
+    void search();
 };
 
 #endif

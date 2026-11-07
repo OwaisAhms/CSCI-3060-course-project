@@ -308,3 +308,85 @@ void User::addcredit(){
 
     cout << "Credit transaction recorded!" << endl;
 }
+
+
+void User::search(){
+
+    if (is_logged_in == false){
+        cout << "You must be logged in!" << endl;
+        return;
+    }
+
+    string query, line;
+
+    cout << "Enter search query: ";
+    getline(cin >> ws, query);
+
+    // Search games
+    ifstream MyFile("../../Data/AvailableGamesFiles.txt");
+
+    if (!MyFile.is_open()){
+        cout << "Could not open Available Games file!" << endl;
+        return;
+    }
+
+    cout << "Matching games:" << endl;
+
+    while(getline(MyFile, line)){
+        string game_name = line.substr(0, line.find(","));
+
+        if(game_name.find(query) != string::npos){
+            cout << line << endl;
+        }
+    }
+
+    MyFile.close();
+
+    // Search users
+    ifstream MyFile2("../../Data/CurrentUserAccounts.txt");
+
+    if (!MyFile2.is_open()){
+        cout << "Could not open User Account file!" << endl;
+        return;
+    }
+
+    cout << "Matching users:" << endl;
+
+    while(getline(MyFile2, line)){
+
+        if(line == "") continue;
+
+        string name = line.substr(0, 15);
+        name = name.substr(0, name.find("_"));
+
+        if(name.find(query) != string::npos){
+
+            // Check if an admin is selling games
+            if(usertype != "AA" && line.substr(16, 2) == "AA"){
+
+                bool selling = false;
+                ifstream SellerFile("../../Data/AvailableGamesFiles.txt");
+                string game;
+
+                while(getline(SellerFile, game)){
+                    string seller = game.substr(game.find(",") + 1);
+                    seller = seller.substr(seller.find(",") + 2);
+                    seller = seller.substr(0, seller.find("\r"));
+
+                    if(seller == name){
+                        selling = true;
+                        break;
+                    }
+                }
+
+                SellerFile.close();
+
+                if(selling == false) continue;
+            }
+
+            cout << name << endl;
+        }
+    }
+
+    MyFile2.close();
+}
