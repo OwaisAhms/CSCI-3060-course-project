@@ -77,7 +77,10 @@ int main() {
         }
 
         if (user_action == 5){
-            main_admin.deleteuser();
+            string del_user;
+            cout << "Enter user to be deleted ";
+            cin >> del_user;
+            main_admin.deleteuser(del_user, false);
         }
 
         if (user_action == 6){
@@ -87,21 +90,39 @@ int main() {
             cout << main_admin.All_active_accounts(input,false) << endl;
         }
 
-        if (user_action == 7){
+       if (user_action == 7){
             if (user_input == "A"){
-                main_admin.sell();
+                string game_name;
+                string price;
+
+                cout << "Enter the name of the game you want to sell: ";
+                cin >> game_name;
+                cout << "Enter the price for said game: ";
+                cin >> price;
+
+                main_admin.sell(game_name, price);
             }
             else{
-                main_user.sell();
+                string game_name;
+                string price;
+                main_user.sell(game_name, price);
             }
         }
 
         if (user_action == 8){
             if (user_input == "A"){
-                main_admin.buy();
+                string game_name;
+                cout << "Enter the name of the game you want to buy: ";
+                cin >> game_name;
+                string seller_name;
+                cout << "Enter seller user: ";
+                cin >> seller_name;
+                main_admin.buy(game_name,seller_name,false);
             }
             else{
-                main_user.buy();
+                string game_name;
+                string sellar_name;
+                main_user.buy(game_name,sellar_name, false);
             }
         }
     }

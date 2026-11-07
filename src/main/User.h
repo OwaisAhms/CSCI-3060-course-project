@@ -20,8 +20,8 @@ public:
     double curr_credits = 0.0;
     string login(string username_input,bool istest);
     string logout(string user_input);
-    void sell();
-    void buy();
+    string sell(string game_name, string price);
+    string buy(string game_name, string seller_username, bool istest);
     void addcredit();
 };
 

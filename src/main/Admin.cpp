@@ -75,18 +75,39 @@ string Admin::create(string set_user,bool istest){
 }
 
 // Delete User
-void Admin::deleteuser(){
+string Admin::deleteuser(string user_delete,bool istest){
+    
+    //cout << filesystem::current_path() << endl;
     if (usertype == "AA"){
-
-        string user_delete;
-        
-        cout << "Enter username for user to be deleted" << "\n";
-        cin >>  user_delete;
+        //cout << user_delete << "\n";
+        //string user_delete;
+        //
+        // cout << "Enter username for user to be deleted" << "\n";
+        // cin >>  user_delete;
 
         // checks to see if the user exists and is not the current user and would remove all their perms.
-        ifstream MyFile("../../Data/CurrentUserAccounts.txt");
+        string filepath; 
+        string filepath2;
 
-        ofstream tempFile("../../Data/temp.txt");
+
+        if (istest == false){
+            filepath = "../../Data/CurrentUserAccounts.txt";
+            filepath2 = "../../Data/temp.txt";
+        }
+        else{
+            filepath = "../../../../Data/CurrentUserAccounts.txt";
+            filepath2 = "../../../../Data/temp.txt";
+        }
+
+
+
+        ifstream MyFile(filepath);
+        if (!MyFile.is_open()){
+            return "error opening accounts file";
+        }
+        ofstream tempFile(filepath2);
+        
+        
 
         string myText;
         bool user_found = false;
@@ -94,16 +115,18 @@ void Admin::deleteuser(){
 
         while (getline(MyFile, line))
         {
+            // cout << line << "\n";
             if (line.find(user_delete) != string::npos){
-                tempFile << line << "\n";
+                user_found = true;
+                cout << "user has been deleted" << "\n";
                 
             }
             else{
-                user_found = true;
-                cout << "User has been deleted" << "\n";
+
+                tempFile << line << "\n";
             }
         }
-        
+
         MyFile.close();
         tempFile.close();
 
@@ -118,12 +141,14 @@ void Admin::deleteuser(){
         MyFile2.close();
 
         if(user_found == false){
-            cout << "User not found" << "\n";
+            cout << "user does not exist" << "\n";
+            return "user does not exist\r";
         }
-
+        return "user has been deleted";
     }
     else{
         cout << "only admin can delete users" << "\n";
+        return "only admin can delete users";
     }
 }
 

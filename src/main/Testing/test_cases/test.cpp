@@ -109,8 +109,80 @@ int main() {
         }
     );
     
+    
+    cout << "delete test" << endl;
+    admin_user.usertype = "AA";
+    const bool delete_validation_passed = test_output(
+        "../test_inputs/delete.txt",
+        "../test_expected_outputs/delete.txt",
+        admin_user,
+        [](Admin& test_user, const string& input) {
+            return test_user.deleteuser(input,true);
+        }
+    );
 
-    if (login_passed && logout_passed && create_passed && All_active_accounts_passed) {
+    cout << "Sell test" << endl;
+    non_admin_user.usertype = "BS";
+    const bool sell_permission_passed = test_output(
+        "../test_inputs/sell_permission.txt",
+        "../test_expected_outputs/sell_permission.txt",
+        non_admin_user,
+        [](User& test_user, const string& input) {
+            size_t pos = input.find(',');
+
+            string game_name = input.substr(0, pos);
+            string price = input.substr(pos + 1);
+            return test_user.sell(input, price);
+        }
+    );
+
+    non_admin_user.usertype = "SS";
+    const bool sell_validation_passed = test_output(
+        "../test_inputs/sell.txt",
+        "../test_expected_outputs/sell.txt",
+        non_admin_user,
+        [](User& test_user, const string& input) {
+            size_t pos = input.find(',');
+
+            string game_name = input.substr(0, pos);
+            string price = input.substr(pos + 1);
+            return test_user.sell(input, price);
+        }
+    );
+
+    cout << "buy test" << endl;
+    non_admin_user.usertype = "SS";
+    const bool buy_permission_passed = test_output(
+        "../test_inputs/buy_permission.txt",
+        "../test_expected_outputs/buy_permission.txt",
+        non_admin_user,
+        [](User& test_user, const string& input) {
+            size_t pos = input.find(',');
+
+            string game_name = input.substr(0, pos);
+            string sell_name = input.substr(pos + 1);
+            return test_user.buy(game_name, sell_name,true);
+        }
+    );
+
+    non_admin_user.usertype = "BS";
+    admin_user.curr_credits = 100;
+    const bool buy_validation_passed = test_output(
+        "../test_inputs/buy.txt",
+        "../test_expected_outputs/buy.txt",
+        admin_user,
+        [](User& test_user, const string& input) {
+            size_t pos = input.find(',');
+
+            string game_name = input.substr(0, pos);
+            string sell_name = input.substr(pos + 1);
+            return test_user.buy(game_name, sell_name,true);
+        }
+    );
+
+    if (login_passed && logout_passed && create_passed && All_active_accounts_passed
+    && delete_validation_passed && sell_permission_passed && sell_validation_passed
+    && buy_permission_passed && buy_validation_passed) {
         cout << "All tests passed\n";
         return 0;
     }
