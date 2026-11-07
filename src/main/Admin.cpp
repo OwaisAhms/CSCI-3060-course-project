@@ -1,4 +1,5 @@
 #include "Admin.h"
+#include <iomanip>
 
 string Admin::create(string set_user,bool istest){
     if (usertype == "AA"){
@@ -152,83 +153,111 @@ string Admin::deleteuser(string user_delete,bool istest){
     }
 }
 
-void Admin::refund(){
+
+string Admin::refund(string input, bool istest){
 
     if (usertype != "AA"){
-        cout << "You arent allowed to do this action!" << endl;
-        return;
-
+        return "you are not authorized for this action";
     }
 
     string buyer_username;
     string seller_username;
     double refund_amount;
 
-    cout << "Give the buyer username: ";
-    cin >> buyer_username;
+    stringstream s(input);
 
-    cout << "Give the seller username: ";
-    cin >> seller_username;
+    if (!(s >> buyer_username >> seller_username >> refund_amount)){
+        return "Invalid refund amount";
+    }
 
-    cout << "Enter the refund amount: ";
-    cin >> refund_amount;
+    if (refund_amount <= 0 || refund_amount > 999999.99){
+        return "Invalid refund amount";
+    }
 
-    ifstream MyFile("../../Data/CurrentUserAccounts.txt");
+    string filepath;
+    if (istest == true){
+        filepath = "../test_inputs/CurrentUserAccounts.txt";
+    }
+    else{
+        filepath = "../../Data/CurrentUserAccounts.txt";
+    }
 
-    if(!MyFile.is_open()){
-        cout << "Could not open User Account file!" << endl;
-        return;
+    ifstream MyFile(filepath);
 
+    if (!MyFile.is_open()){
+        return "Could not open User Account file!";
     }
 
     string myText;
     bool buyer_found = false;
     bool seller_found = false;
 
-    while(getline(MyFile, myText)){
-        if(myText.find(buyer_username) != string::npos){
-            buyer_found = true;
+    while (getline(MyFile, myText)){
+        string name = myText.substr(0, 15);
+        name.erase(remove(name.begin(), name.end(), '_'), name.end());
 
+        if (name == buyer_username){
+            buyer_found = true;
         }
 
-        if(myText.find(seller_username) != string::npos){
+        if (name == seller_username){
             seller_found = true;
-
         }
     }
 
     MyFile.close();
 
-    if(buyer_found == false){
-        cout << "Buyer does not exist" << endl;
-        return;
-
-    }
-    if(seller_found == false){
-        cout << "Seller does not exist" << endl;
-        return;
-
-    }
-    if(refund_amount <= 0){
-        cout << "Invalid refund amount" << endl;
-        return;
-
+    if (buyer_found == false){
+        return "buyer does not exist";
     }
 
-    // Output Refund transaction
-    ofstream MyFile2("../../Data/DailyTransactionFileRefund.txt", fstream::app);
+    if (seller_found == false){
+        return "seller does not exist";
+    }
+
+    string filepath2;
+    if (istest == true){
+        filepath2 = "../test_actual_outputs/refund_transactions.txt";
+    }
+    else{
+        filepath2 = "../../Data/DailyTransactionFiles/DailyTransactionFileRefund.txt";
+    }
+
+    ofstream MyFile2(filepath2, fstream::app);
 
     if (!MyFile2.is_open()){
-        cout << "Could not open Daily Transaction File!" << endl;
-        return;
+        return "Could not open Daily Transaction File!";
     }
 
-    MyFile2 << "05 " + buyer_username + " " + seller_username + " " + to_string(refund_amount) + "\n";
+    stringstream money;
+    money << fixed << setprecision(2) << refund_amount;
+    string amount_text = money.str();
+
+    string padded_amount = amount_text;
+    while (padded_amount.length() < 9){
+        padded_amount = "0" + padded_amount;
+    }
+
+    string padded_buyer = buyer_username;
+    string padded_seller = seller_username;
+
+    while (padded_buyer.length() < 15){
+        padded_buyer += "_";
+    }
+
+    while (padded_seller.length() < 15){
+        padded_seller += "_";
+    }
+
+    MyFile2 << "05 " << padded_buyer << " " << padded_seller
+            << " " << padded_amount << "\n";
 
     MyFile2.close();
 
-    cout << "Refund transaction recorded!" << endl;
+    return "transferred " + amount_text + " credit from "
+           + seller_username + " to " + buyer_username;
 }
+
 string Admin::All_active_accounts(string input,bool istest){
     // Will output all active accounts and relevant information
     if(input == "Y"){

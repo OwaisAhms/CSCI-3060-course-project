@@ -1,4 +1,5 @@
 #include "User.h"
+#include <iomanip>
 
 // User login method, checks for username gives user transaction privilages
 string User::login(string username_input, bool istest){
@@ -241,46 +242,55 @@ string User::buy(string game_name, string seller_username, bool istest){
 }
 
 
-void User::addcredit(){
+
+string User::addcredit(string input, bool istest){
 
     if (is_logged_in == false){
-        cout << "You must be logged in!" << endl;
-        return;
+        return "You must be logged in!";
     }
 
     double amount;
     string recieving_username;
     string recieving_usertype;
-    bool user_found = false;
 
-    cout << "Add credit: " << endl;
-    cin >> amount;
+    stringstream s(input);
+    if (!(s >> amount)){
+        return "You cannot add this credit amount!";
+    }
 
     if (amount <= 0 || amount > 1000.00){
-        cout << "You cannot add this credit amount!" << endl;
-        return;
+        return "credit amount exceeds session maximum";
     }
 
     if (usertype == "AA"){
-        cout << "Enter username: " << endl;
-        cin >> recieving_username;
+        s >> recieving_username;
     }
     else{
         recieving_username = username;
     }
 
-    ifstream MyFile("../../Data/CurrentUserAccounts.txt");
-
-    if (!MyFile.is_open()){
-        cout << "Could not open User Account file!" << endl;
-        return;
+    string filepath;
+    if (istest == true){
+        filepath = "../test_inputs/CurrentUserAccounts.txt";
+    }
+    else{
+        filepath = "../../Data/CurrentUserAccounts.txt";
     }
 
-    user_found = false;
+    ifstream MyFile(filepath);
+
+    if (!MyFile.is_open()){
+        return "Could not open User Account file!";
+    }
+
+    bool user_found = false;
     string myText;
 
-    while(getline(MyFile, myText)){
-        if (myText.find(recieving_username) != string::npos){
+    while (getline(MyFile, myText)){
+        string name = myText.substr(0, 15);
+        name.erase(remove(name.begin(), name.end(), '_'), name.end());
+
+        if (name == recieving_username){
             user_found = true;
             recieving_usertype = myText.substr(16, 2);
             break;
@@ -290,25 +300,48 @@ void User::addcredit(){
     MyFile.close();
 
     if (user_found == false){
-        cout << "User does not exist!" << endl;
-        return;
+        return "user does not exist";
     }
 
-    // Output Add Credit transaction
-    ofstream MyFile2("../../Data/DailyTransactionFileAddCredit.txt", fstream::app);
+    string filepath2;
+    if (istest == true){
+        filepath2 = "../test_actual_outputs/addcredit_transactions.txt";
+    }
+    else{
+        filepath2 = "../../Data/DailyTransactionFiles/DailyTransactionFileAddCredit.txt";
+    }
+
+    ofstream MyFile2(filepath2, fstream::app);
 
     if (!MyFile2.is_open()){
-        cout << "Could not open Daily Transaction File!" << endl;
-        return;
+        return "Could not open Daily Transaction File!";
     }
 
-    MyFile2 << "06 " + recieving_username + " " + recieving_usertype + " " + to_string(amount) + "\n";
+    stringstream money;
+    money << fixed << setprecision(2) << amount;
+    string amount_text = money.str();
+
+    string padded_amount = amount_text;
+    while (padded_amount.length() < 9){
+        padded_amount = "0" + padded_amount;
+    }
+
+    string padded_name = recieving_username;
+    while (padded_name.length() < 15){
+        padded_name += "_";
+    }
+
+    MyFile2 << "06 " << padded_name << " " << recieving_usertype
+            << " " << padded_amount << "\n";
 
     MyFile2.close();
 
-    cout << "Credit transaction recorded!" << endl;
-}
+    if (usertype == "AA"){
+        return amount_text + " credit added to " + recieving_username;
+    }
 
+    return amount_text + " credit added";
+}
 
 void User::search(){
 

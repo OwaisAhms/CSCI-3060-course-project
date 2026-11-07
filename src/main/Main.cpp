@@ -65,15 +65,34 @@ int main() {
         }
 
         if (user_action == 3){
-            main_admin.refund();
+            string buyer, seller, amount;
+
+            cout << "Give the buyer username: ";
+            cin >> buyer;
+
+            cout << "Give the seller username: ";
+            cin >> seller;
+
+            cout << "Enter the refund amount: ";
+            cin >> amount;
+
+            cout << main_admin.refund(buyer + " " + seller + " " + amount, false) << endl;
         }
 
         if (user_action == 4){
+            string amount, recieving_username;
+
+            cout << "Add credit: ";
+            cin >> amount;
+
             if (user_input == "A"){
-                main_admin.addcredit();
+                cout << "Enter username: ";
+                cin >> recieving_username;
+
+                cout << main_admin.addcredit(amount + " " + recieving_username, false) << endl;
             }
             else{
-                main_user.addcredit();
+                cout << main_user.addcredit(amount, false) << endl;
             }
         }
 

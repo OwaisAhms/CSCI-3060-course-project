@@ -67,6 +67,8 @@ int main() {
     User user;
     Admin admin_user;
     Admin non_admin_user;
+    User credit_user;
+    Admin refund_user;
     admin_user.usertype = "AA";
 
     cout << "login test" << endl;
@@ -86,6 +88,54 @@ int main() {
         user,
         [](User& test_user, const string& input) {
             return test_user.logout(input);
+        }
+    );
+
+    
+    // Add Credit test
+    ofstream("../test_actual_outputs/addcredit_transactions.txt").close();
+
+    cout << "addcredit test" << endl;
+    const bool addcredit_passed = test_output(
+        "../test_inputs/addcredit.txt",
+        "../test_expected_outputs/addcredit.txt",
+        credit_user,
+        [](User& test_user, const string& input) {
+            stringstream s(input);
+            string type;
+            s >> type;
+
+            string info;
+            getline(s >> ws, info);
+
+            test_user.usertype = type;
+            test_user.username = type == "AA" ? "User001" : "User003";
+            test_user.is_logged_in = true;
+
+            return test_user.addcredit(info, true);
+        }
+    );
+
+    // Refund test
+    ofstream("../test_actual_outputs/refund_transactions.txt").close();
+
+    cout << "refund test" << endl;
+    const bool refund_passed = test_output(
+        "../test_inputs/refund.txt",
+        "../test_expected_outputs/refund.txt",
+        refund_user,
+        [](Admin& test_user, const string& input) {
+            stringstream s(input);
+            string type;
+            s >> type;
+
+            string info;
+            getline(s >> ws, info);
+
+            test_user.usertype = type;
+            test_user.is_logged_in = true;
+
+            return test_user.refund(info, true);
         }
     );
 
@@ -180,7 +230,7 @@ int main() {
         }
     );
 
-    if (login_passed && logout_passed && create_passed && All_active_accounts_passed
+    if (login_passed && logout_passed && addcredit_passed && refund_passed && create_passed && All_active_accounts_passed
     && delete_validation_passed && sell_permission_passed && sell_validation_passed
     && buy_permission_passed && buy_validation_passed) {
         cout << "All tests passed\n";

@@ -22,8 +22,8 @@ public:
     string logout(string user_input);
     string sell(string game_name, string price);
     string buy(string game_name, string seller_username, bool istest);
-    void addcredit();
-    void search();
+    string addcredit(string input, bool istest);
+    string refund(string input, bool istest);
 };
 
 #endif
