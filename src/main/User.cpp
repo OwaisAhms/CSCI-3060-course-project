@@ -343,47 +343,54 @@ string User::addcredit(string input, bool istest){
     return amount_text + " credit added";
 }
 
-void User::search(){
+
+string User::search(string input, bool istest){
 
     if (is_logged_in == false){
-        cout << "You must be logged in!" << endl;
-        return;
+        return "You must be logged in!";
     }
 
-    string query, line;
+    string query = input;
+    string line;
+    string output = "Matching games:";
 
-    cout << "Enter search query: ";
-    getline(cin >> ws, query);
+    string games_filepath;
+    string users_filepath;
+
+    if (istest == true){
+        games_filepath = "../test_inputs/AvailableGamesFiles.txt";
+        users_filepath = "../test_inputs/CurrentUserAccounts.txt";
+    }
+    else{
+        games_filepath = "../../Data/AvailableGamesFiles.txt";
+        users_filepath = "../../Data/CurrentUserAccounts.txt";
+    }
 
     // Search games
-    ifstream MyFile("../../Data/AvailableGamesFiles.txt");
+    ifstream MyFile(games_filepath);
 
     if (!MyFile.is_open()){
-        cout << "Could not open Available Games file!" << endl;
-        return;
+        return "Could not open Available Games file!";
     }
-
-    cout << "Matching games:" << endl;
 
     while(getline(MyFile, line)){
         string game_name = line.substr(0, line.find(","));
 
         if(game_name.find(query) != string::npos){
-            cout << line << endl;
+            output += " " + line;
         }
     }
 
     MyFile.close();
 
     // Search users
-    ifstream MyFile2("../../Data/CurrentUserAccounts.txt");
+    ifstream MyFile2(users_filepath);
 
     if (!MyFile2.is_open()){
-        cout << "Could not open User Account file!" << endl;
-        return;
+        return "Could not open User Account file!";
     }
 
-    cout << "Matching users:" << endl;
+    output += " | Matching users:";
 
     while(getline(MyFile2, line)){
 
@@ -398,13 +405,19 @@ void User::search(){
             if(usertype != "AA" && line.substr(16, 2) == "AA"){
 
                 bool selling = false;
-                ifstream SellerFile("../../Data/AvailableGamesFiles.txt");
+                ifstream SellerFile(games_filepath);
                 string game;
 
                 while(getline(SellerFile, game)){
-                    string seller = game.substr(game.find(",") + 1);
-                    seller = seller.substr(seller.find(",") + 2);
-                    seller = seller.substr(0, seller.find("\r"));
+                    string seller = game.substr(game.rfind(",") + 1);
+
+                    while(seller.length() > 0 && seller[0] == ' '){
+                        seller.erase(0, 1);
+                    }
+
+                    if(!seller.empty() && seller.back() == '\r'){
+                        seller.pop_back();
+                    }
 
                     if(seller == name){
                         selling = true;
@@ -417,9 +430,11 @@ void User::search(){
                 if(selling == false) continue;
             }
 
-            cout << name << endl;
+            output += " " + name;
         }
     }
 
     MyFile2.close();
+
+    return output;
 }

@@ -147,7 +147,12 @@ int main() {
         }
 
         if (user_action == 9){
-            current_user.search();
+            string query;
+
+            cout << "Enter search query: ";
+            getline(cin >> ws, query);
+
+            cout << current_user.search(query, false) << endl;
         }
     }
 

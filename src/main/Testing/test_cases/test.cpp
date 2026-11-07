@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <sstream>
 using namespace std;
 
 template <typename UserType, typename TestFunction>
@@ -69,6 +70,7 @@ int main() {
     Admin non_admin_user;
     User credit_user;
     Admin refund_user;
+    User search_user;
     admin_user.usertype = "AA";
 
     cout << "login test" << endl;
@@ -136,6 +138,29 @@ int main() {
             test_user.is_logged_in = true;
 
             return test_user.refund(info, true);
+        }
+    );
+
+    
+    // Search test
+    cout << "search test" << endl;
+
+    const bool search_passed = test_output(
+        "../test_inputs/search.txt",
+        "../test_expected_outputs/search.txt",
+        search_user,
+        [](User& test_user, const string& input) {
+            stringstream s(input);
+            string type;
+            s >> type;
+
+            string query;
+            getline(s >> ws, query);
+
+            test_user.usertype = type;
+            test_user.is_logged_in = true;
+
+            return test_user.search(query, true);
         }
     );
 
@@ -230,7 +255,7 @@ int main() {
         }
     );
 
-    if (login_passed && logout_passed && addcredit_passed && refund_passed && create_passed && All_active_accounts_passed
+    if (login_passed && logout_passed && addcredit_passed && refund_passed && search_passed && create_passed && All_active_accounts_passed
     && delete_validation_passed && sell_permission_passed && sell_validation_passed
     && buy_permission_passed && buy_validation_passed) {
         cout << "All tests passed\n";
