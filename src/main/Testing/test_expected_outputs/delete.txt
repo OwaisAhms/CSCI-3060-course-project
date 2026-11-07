@@ -1,2 +1,2 @@
 user does not exist
-user001 has been deleted
+user has been deleted

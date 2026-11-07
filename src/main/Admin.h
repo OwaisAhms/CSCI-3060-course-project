@@ -6,7 +6,7 @@ class Admin: public User
 {
 public:
     string create(string setuser,bool istest);
-    void deleteuser();
+    string deleteuser(string user_delete, bool istest);
     void refund();
     void All_active_accounts();
     void Search();

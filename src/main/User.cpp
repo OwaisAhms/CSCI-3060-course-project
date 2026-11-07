@@ -53,114 +53,177 @@ string User::logout(string input){
     return "user did not log out";
 }
 
-void User::sell(){
+string User::sell(string game_name, string price){
     if (usertype == "BS"){
-        cout << "You are not authroized to make this function" << "\n";
+        cout << "you are not authorized for this action" << "\n";
+        return "you are not authorized for this action";
     }
     else{
-        string game_name;
-        string price;
+        //string game_name;
+        //string price;
+        // bool pass = true;
 
-        cout << "Give the name of the game: " << "\n";;
-        cin >> game_name;
+        // while (pass){
+        //     cout << "Give the name of the game: " << "\n";;
+        //     cin >> game_name;
 
-        cout << "Give the price of the game: " << "\n";;
-        cin >> price;
+        //     cout << "Give the price of the game: " << "\n";;
+        //     cin >> price;
+
+        //     if(game_name.length() > 25){
+        //         cout << "Game name not usable\n";
+        //     }
+        //     else if (stoi(price) > 999.99){
+        //         cout << "price above maximum price\n";
+        //     }
+        //     else {
+        //         pass = false;
+        //     }
+        // }
+        
+        if(game_name.length() > 25){
+            return "Game name not usable\r";
+        }
+        if (stod(price) > 999.99){
+            return "price above maximum price\r";
+        }
+        
 
         // if game name is unique and the price isn't over 999.99
         // add game to list of games
         // allow transactions false
-        ofstream file("../../Data/AvailableGamesFiles.txt");
+        ofstream file("../../Data/AvailableGamesFile.txt");
         file <<  game_name << ", " << price << "\n";
         file.close();
 
-        ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFileBuy",fstream::app);
+        ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFileSell",fstream::app);
 
         MyFile2 << "03_" + game_name + "_" + this->username + price +"/n";
 
         MyFile2.close();
+
+        return "Game has been listed for sale!";
     }
 }
 
-void User::buy(){
+string User::buy(string game_name, string seller_username, bool istest){
     if (usertype == "SS"){
-        cout << "You are not authroized to make this function" << "\n";
+        cout << "you are not authorized for this action\n";
+        return "you are not authorized for this action";
     }
     else{
-        string game_name;
-        string buyer_username;
-        string seller_username;
+        //string game_name;
+        //string buyer_username;
+        //string seller_username;
 
-        cout << "Give the buyer username: " << "\n";
-        cin >> buyer_username;
+        // cout << "Give the buyer username: " << "\n";
+        // cin >> buyer_username;
 
-        cout << "Give the seller username: " << "\n";
-        cin >> seller_username;
+        // cout << "Give the seller username: " << "\n";
+        // cin >> seller_username;
 
         // if game exists and buyer has equal or greater than the amount needed to purchase the game, and the game isnt the buyers library
         // debit buyer, credit seller (increase/ decrease curr_credits)
         // add game to buyers collection
+        string filepath;
+        string filepath2;
+        string filepath3;
+        if (istest == false){
+            filepath = "../../Data/CurrentUserAccounts.txt";
+            filepath2 = "../../Data/temp.txt";
+            filepath3 = "../../Data/AvailableGamesFile.txt";
+        }
+        else{
+            filepath = "../../../../Data/CurrentUserAccounts.txt";
+            filepath2 = "../../../../Data/temp.txt";
+            filepath3 = "../../../../Data/AvailableGamesFile.txt";
+        }
+        
 
-
-        cout << "Enter game name you wish to purchase: " << "\n";
-        cin >> game_name;
-
-        ifstream file("../../Data/AvailableGamesFiles.txt");
-
+        ifstream file(filepath3);
+        if (!file.is_open()){
+        cout << "Could not open User Account file!" << endl;
+        return "Could not open User Account file!";
+        }
+        //cout << "Game being searched: [" << game_name << "]" << endl;
         bool game_found = false;
         string game_data;
-        int credits = 0;
+        double credits = 0;
         string credit;
         string game;
-        int buy_creds = 0;
-        int sell_creds = 0;
+        double buy_creds = 0;
+        double sell_creds = 0;
 
-        while(getline(file,game)){
-            if(game.find(game_name) != string::npos){
-                game_found = true;
-                game_data = game;
+        while(!game_found){
+            // cout << "Enter game name you wish to purchase: " << "\n";
+            // cin >> game_name;
+
+            while(getline(file,game)){
+                //cout << game << "\n";
+                if(game.find(game_name) != string::npos){
+                    game_found = true;
+                    game_data = game;
+                }
+            }
+            if (!game_found){
+                cout << "Please enter a valid game\n";
+                return "Please enter a valid game\r";
             }
         }
+
+        size_t pos1;
+        size_t pos2;
+        string user;
+        string user_type;
 
         file.close();
         if (game_found){
             size_t pos = game_data.find(',');
             credit = game_data.substr(pos + 1, game_data.length());
-            credits = stoi(credit);
+            credits = stod(credit);
 
-            ifstream MyFile("../../Data/CurrentUserAccounts.txt");
+            if (credits > this->curr_credits){
+                return "you do not have the sufficient funds to purchase this game\r";
+            }
 
-            ofstream tempFile("../../Data/temp.txt");
+            ifstream MyFile(filepath);
+
+            ofstream tempFile(filepath2);
 
             bool user_found = false;
             string line;
             string newLine;
 
             while (getline(MyFile, line))
-            {
-                if (line.find(seller_username) != string::npos){
-                    pos = line.find(',');
-                    newLine = line.substr(0,pos);
-                    buy_creds = stoi(line.substr(pos + 1));
+            {   
+                if (line.find(this->username) != string::npos){
+                    pos1 = line.find(' ');
+                    user = line.substr(0,pos1);
+                    pos2 = line.find(' ', pos1 + 1);
+                    user_type = line.substr(pos1 + 1, pos2 - pos1 - 1);
+                    buy_creds = this->curr_credits;
                     buy_creds -= credits;
+                    this->curr_credits = buy_creds;
+                    char buffer2[33];
+                    tempFile << user << " " << user_type << " " << to_string(buy_creds) << "\n";
+                
+                }
+                else if (line.find(seller_username) != string::npos){
+                    pos1 = line.find(' ');
+                    user = line.substr(0,pos1);
+                    pos2 = line.find(' ', pos1 + 1);
+                    user_type = line.substr(pos1 + 1, pos2 - pos1 - 1);
+                    sell_creds = stod(line.substr(pos2 + 1));
+                    sell_creds += credits;
                     
                     char buffer1[33];
-                    tempFile << line << itoa(buy_creds, buffer1, 10) << "\n";
+                    tempFile << user << " " << user_type << " " << to_string(sell_creds) << "\n";
                 
                 }
-                if (line.find(buyer_username) != string::npos){
-                    pos = line.find(',');
-                    newLine = line.substr(0,pos);
-                    sell_creds = stoi(line.substr(pos + 1));
-                    sell_creds += credits;
-
-                    char buffer2[33];
-                    tempFile << newLine << itoa(credits, buffer2, 10) << "\n";
                 
-                }
             }
         
-            MyFile.close();
+            MyFile.close(); 
             tempFile.close();
 
             remove("../../Data/CurrentUserAccounts.txt");
@@ -169,11 +232,11 @@ void User::buy(){
 
             ofstream MyFile2("../../Data/DailyTransactionFIles/DailyTransactionFIleBuy",fstream::app);
 
-            MyFile2 << "05_" + buyer_username + "_" + seller_username + to_string(credits) +"/n";
+            MyFile2 << "05_" + this->username + "_" + seller_username + to_string(credits) +"/n";
 
             MyFile2.close();
         }
-
+        return "added game to buyer collection";
     }
 }
 
