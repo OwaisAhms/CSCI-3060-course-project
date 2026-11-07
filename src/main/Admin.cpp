@@ -216,7 +216,7 @@ void Admin::refund(){
     }
 
     // Output Refund transaction
-    ofstream MyFile2("../../Data/DailyTransactionFile.txt", fstream::app);
+    ofstream MyFile2("../../Data/DailyTransactionFileRefund.txt", fstream::app);
 
     if (!MyFile2.is_open()){
         cout << "Could not open Daily Transaction File!" << endl;

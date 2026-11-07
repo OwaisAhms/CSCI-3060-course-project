@@ -295,7 +295,7 @@ void User::addcredit(){
     }
 
     // Output Add Credit transaction
-    ofstream MyFile2("../../Data/DailyTransactionFile.txt", fstream::app);
+    ofstream MyFile2("../../Data/DailyTransactionFileAddCredit.txt", fstream::app);
 
     if (!MyFile2.is_open()){
         cout << "Could not open Daily Transaction File!" << endl;
