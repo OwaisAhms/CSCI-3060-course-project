@@ -1,4 +1,5 @@
+user does not exist
 credit amount exceeds session maximum
-1000.00 credit added to User001
+1000.00 credit added to User003
 credit amount exceeds session maximum
 1000.00 credit added
