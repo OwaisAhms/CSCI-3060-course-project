@@ -68,6 +68,9 @@ string Admin::create(string set_user,bool istest){
         MyFile << "\n" + user_info;
 
         MyFile.close();
+
+        
+
         return user_info + " added to Current Users";
     }
     else{
